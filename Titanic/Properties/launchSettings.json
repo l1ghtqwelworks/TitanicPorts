@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Titanic": {
+      "commandName": "Project",
+      "commandLineArgs": "get all"
+    }
+  }
+}
