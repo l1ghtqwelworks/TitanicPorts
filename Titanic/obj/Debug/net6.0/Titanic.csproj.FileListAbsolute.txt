@@ -13,3 +13,7 @@ C:\Users\Light\source\repos\Titanic\Titanic\obj\Debug\net6.0\Titanic.dll
 C:\Users\Light\source\repos\Titanic\Titanic\obj\Debug\net6.0\ref\Titanic.dll
 C:\Users\Light\source\repos\Titanic\Titanic\obj\Debug\net6.0\Titanic.pdb
 C:\Users\Light\source\repos\Titanic\Titanic\obj\Debug\net6.0\Titanic.genruntimeconfig.cache
+C:\Users\Light\source\repos\Titanic\Titanic\bin\Debug\net6.0\Open.Nat.dll
+C:\Users\Light\source\repos\Titanic\Titanic\bin\Debug\net6.0\TitanicLib.dll
+C:\Users\Light\source\repos\Titanic\Titanic\bin\Debug\net6.0\TitanicLib.pdb
+C:\Users\Light\source\repos\Titanic\Titanic\obj\Debug\net6.0\Titanic.csproj.CopyComplete

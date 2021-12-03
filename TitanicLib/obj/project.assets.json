@@ -23,7 +23,7 @@
           "lib/netstandard1.0/_._": {}
         },
         "build": {
-          "build/netstandard2.0/_._": {}
+          "build/netstandard2.0/NETStandard.Library.targets": {}
         }
       },
       "Open.NAT/2.1.0": {
@@ -33,20 +33,6 @@
         },
         "runtime": {
           "lib/net45/Open.Nat.dll": {}
-        }
-      },
-      "TitanicLib/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "dependencies": {
-          "NETStandard.Library": "2.0.3",
-          "Open.Nat": "2.1.0"
-        },
-        "compile": {
-          "bin/placeholder/TitanicLib.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/TitanicLib.dll": {}
         }
       }
     }
@@ -212,16 +198,12 @@
         "open.nat.2.1.0.nupkg.sha512",
         "open.nat.nuspec"
       ]
-    },
-    "TitanicLib/1.0.0": {
-      "type": "project",
-      "path": "../TitanicLib/TitanicLib.csproj",
-      "msbuildProject": "../TitanicLib/TitanicLib.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "TitanicLib >= 1.0.0"
+      "NETStandard.Library >= 2.0.3",
+      "Open.Nat >= 2.1.0"
     ]
   },
   "packageFolders": {
@@ -231,11 +213,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Light\\source\\repos\\Titanic\\Titanic\\Titanic.csproj",
-      "projectName": "Titanic",
-      "projectPath": "C:\\Users\\Light\\source\\repos\\Titanic\\Titanic\\Titanic.csproj",
+      "projectUniqueName": "C:\\Users\\Light\\source\\repos\\Titanic\\TitanicLib\\TitanicLib.csproj",
+      "projectName": "TitanicLib",
+      "projectPath": "C:\\Users\\Light\\source\\repos\\Titanic\\TitanicLib\\TitanicLib.csproj",
       "packagesPath": "C:\\Users\\Light\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Light\\source\\repos\\Titanic\\Titanic\\obj\\",
+      "outputPath": "C:\\Users\\Light\\source\\repos\\Titanic\\TitanicLib\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -255,11 +237,7 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {
-            "C:\\Users\\Light\\source\\repos\\Titanic\\TitanicLib\\TitanicLib.csproj": {
-              "projectPath": "C:\\Users\\Light\\source\\repos\\Titanic\\TitanicLib\\TitanicLib.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
@@ -271,6 +249,16 @@
     "frameworks": {
       "net6.0": {
         "targetAlias": "net6.0",
+        "dependencies": {
+          "NETStandard.Library": {
+            "target": "Package",
+            "version": "[2.0.3, )"
+          },
+          "Open.Nat": {
+            "target": "Package",
+            "version": "[2.1.0, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

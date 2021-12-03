@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "0925016d-4687-4965-817b-25d8f3ea18b7": {
+      "ProjectGuid": "0925016d-4687-4965-817b-25d8f3ea18b7",
+      "DisplayName": "Titanic",
+      "ColorIndex": 0
+    },
+    "42011a8a-e0a1-4d43-9244-dae571b08f28": {
+      "ProjectGuid": "42011a8a-e0a1-4d43-9244-dae571b08f28",
+      "DisplayName": "TitanicLib",
+      "ColorIndex": 1
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 2
+}

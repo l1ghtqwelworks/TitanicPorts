@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Titanic", "Titanic\Titanic.csproj", "{0925016D-4687-4965-817B-25D8F3EA18B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Titanic", "Titanic\Titanic.csproj", "{0925016D-4687-4965-817B-25D8F3EA18B7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TitanicLib", "..\Shipwreck\ShipwreckLib\TitanicLib.csproj", "{42011A8A-E0A1-4D43-9244-DAE571B08F28}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TitanicLib", "TitanicLib\TitanicLib.csproj", "{8FAC95B6-D49F-4CCF-A9E7-12F6D193F548}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{0925016D-4687-4965-817B-25D8F3EA18B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0925016D-4687-4965-817B-25D8F3EA18B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0925016D-4687-4965-817B-25D8F3EA18B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42011A8A-E0A1-4D43-9244-DAE571B08F28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42011A8A-E0A1-4D43-9244-DAE571B08F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42011A8A-E0A1-4D43-9244-DAE571B08F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42011A8A-E0A1-4D43-9244-DAE571B08F28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FAC95B6-D49F-4CCF-A9E7-12F6D193F548}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FAC95B6-D49F-4CCF-A9E7-12F6D193F548}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FAC95B6-D49F-4CCF-A9E7-12F6D193F548}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FAC95B6-D49F-4CCF-A9E7-12F6D193F548}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

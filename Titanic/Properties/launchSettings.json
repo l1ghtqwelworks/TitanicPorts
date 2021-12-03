@@ -2,7 +2,7 @@
   "profiles": {
     "Titanic": {
       "commandName": "Project",
-      "commandLineArgs": "get all"
+      "commandLineArgs": "add REE 25567 25567 TCP"
     }
   }
 }

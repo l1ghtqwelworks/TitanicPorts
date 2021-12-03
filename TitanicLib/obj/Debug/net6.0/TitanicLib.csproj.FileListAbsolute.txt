@@ -1,0 +1,12 @@
+C:\Users\Light\source\repos\Titanic\TitanicLib\obj\Debug\net6.0\TitanicLib.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Light\source\repos\Titanic\TitanicLib\obj\Debug\net6.0\TitanicLib.AssemblyInfoInputs.cache
+C:\Users\Light\source\repos\Titanic\TitanicLib\obj\Debug\net6.0\TitanicLib.AssemblyInfo.cs
+C:\Users\Light\source\repos\Titanic\TitanicLib\obj\Debug\net6.0\TitanicLib.csproj.CoreCompileInputs.cache
+C:\Users\Light\source\repos\Titanic\TitanicLib\bin\Debug\net6.0\TitanicLib.deps.json
+C:\Users\Light\source\repos\Titanic\TitanicLib\bin\Debug\net6.0\TitanicLib.dll
+C:\Users\Light\source\repos\Titanic\TitanicLib\bin\Debug\net6.0\ref\TitanicLib.dll
+C:\Users\Light\source\repos\Titanic\TitanicLib\bin\Debug\net6.0\TitanicLib.pdb
+C:\Users\Light\source\repos\Titanic\TitanicLib\obj\Debug\net6.0\TitanicLib.dll
+C:\Users\Light\source\repos\Titanic\TitanicLib\obj\Debug\net6.0\ref\TitanicLib.dll
+C:\Users\Light\source\repos\Titanic\TitanicLib\obj\Debug\net6.0\TitanicLib.pdb
+C:\Users\Light\source\repos\Titanic\TitanicLib\obj\Debug\net6.0\TitanicLib.csproj.AssemblyReference.cache

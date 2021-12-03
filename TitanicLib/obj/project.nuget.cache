@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0bwqDyy2zRawt/o91JngOpAyeTsiNnawwmcTSAQo6X5xQmg/Yj2vFSBu8zgxhK4UvYEYn0bDjmuHw+6nHWqYxw==",
+  "dgSpecHash": "EIMEDWPzlTy2UBMcmEFVCGlrR0ld+o5DITQjs6o5po+oAjoxqmvwyOGi2UCn9H0NaPJQZGYx1j1w9O3tXya10Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Light\\source\\repos\\Titanic\\Titanic\\Titanic.csproj",
+  "projectFilePath": "C:\\Users\\Light\\source\\repos\\Titanic\\TitanicLib\\TitanicLib.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Light\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\Light\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
