@@ -144,11 +144,6 @@ namespace ShipwreckLib
             return -1;
         }
 
-        public Port GetPort(int index)
-        {
-            return Values[index].Port;
-        }
-
         public override string ToString()
         {
             var result = new StringBuilder(Length.ToString() + Environment.NewLine);

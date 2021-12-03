@@ -135,9 +135,9 @@ namespace ShipwreckLib
             {
                 var port = new Port(mapping);
                 var customs = GetCustomPorts();
-                int currentIndex;
-                if ((currentIndex = customs.IndexOf(mapping.Description)) != -1)
-                    throw new Exception("Mapping description already in use by: " + customs[currentIndex]);
+                //int currentIndex;
+                //if ((currentIndex = customs.IndexOf(mapping.Description)) != -1)
+                //    throw new Exception("Mapping description already in use by: " + customs[currentIndex]);
                 var result = new PortRange(customs.Count + 1);
                 PortRange.CopyTo(customs, result);
                 result.Add(port);
@@ -161,18 +161,23 @@ namespace ShipwreckLib
                 File.WriteAllText(CustomPortsPath, ports.ToString());
             }
 
+
+            public static async Task<PortRange> GetForwardedPorts()
+            {
+                using (var task = Device.GetAllMappingsAsync()) return PortRange.From(await task, out _);
+            }
             public static async Task<PortRange> GetPorts()
             {
                 int count = 0;
                 Port[] open;
-                using(var task = Device.GetAllMappingsAsync())
+                using (var task = Device.GetAllMappingsAsync())
                 {
                     var mappings = await task;
                     open = new Port[mappings.Count()];
                     foreach (var mapping in mappings)
                     {
                         var cur = new Port(mapping);
-                        if(!cur.Custom) open[count++] = cur;
+                        if (!cur.Custom) open[count++] = cur;
                     }
                 }
                 var customs = GetCustomPorts();
@@ -205,16 +210,17 @@ namespace ShipwreckLib
 
             public static async Task Forward()
             {
-                PortRange range;
-                using (var task = Device.GetAllMappingsAsync()) range = PortRange.From(await task, out _);
+                var range = await GetForwardedPorts();
                 var customs = GetCustomPorts();
-                for(int i = 0; i < customs.Length; i++)
+                for(int i = 0; i < customs.Length; )
                 {
                     var cur = customs[i];
-                    if (range.Overlaps(cur) != -1)
+                    if (range.Overlaps(cur) == -1)
                     {
+                        Console.WriteLine("Opening port: " + cur);
                         using (var task = Device.CreatePortMapAsync(cur.Port.Mapping)) await task;
                     }
+                    i += cur.Length + 1;
                 }
             }
 

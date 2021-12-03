@@ -51,7 +51,19 @@ namespace Titanic
                             case "all":
                                 {
                                     Console.WriteLine("All ports:");
-                                    Console.WriteLine((await Port.Map.GetPorts()).ToString());
+                                    Console.WriteLine(await Port.Map.GetPorts());
+                                }
+                                break;
+                            case "forwarded":
+                                {
+                                    Console.WriteLine("Forwarded ports:");
+                                    Console.WriteLine(await Port.Map.GetForwardedPorts());
+                                }
+                                break;
+                            case "custom":
+                                {
+                                    Console.WriteLine("Custom ports:");
+                                    Console.WriteLine(Port.Map.GetCustomPorts());
                                 }
                                 break;
                         }
@@ -63,12 +75,6 @@ namespace Titanic
                         var startPort = int.Parse(args[2]);
                         var endPort = int.Parse(args[3]);
                         var protocol = Port.ProtocolParse(args[4]);
-                        string marked = CustomPortDescription.MarkCustom(description, protocol);
-                        Console.WriteLine("marked: " + marked);
-                        Console.WriteLine("valid: " + CustomPortDescription.IsValidCustomName(marked, protocol));
-                        string unmarked = CustomPortDescription.UnmarkCustom(marked);
-                        Console.WriteLine("unmarked: " + unmarked);
-                        Console.WriteLine("valid: " + CustomPortDescription.IsValidCustomName(unmarked, protocol));
                         Port.Map.AddMapping(description, startPort, endPort, protocol);
                     }
                     break;
