@@ -9,8 +9,7 @@ namespace Titanic
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(Port.Map.GetCustomPortsPath());
-            //ExecuteArgs(String.Join(" ", args)).Wait();
+            ExecuteArgs(String.Join(" ", args)).Wait();
         }
 
         static async Task ExecuteArgs(string args)

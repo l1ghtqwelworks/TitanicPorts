@@ -11,14 +11,20 @@ namespace Titanic
             {
                 case "all":
                     {
-                        Console.WriteLine("All ports:");
-                        Console.WriteLine(await Port.Map.GetPorts());
+                        if(await TryInitDevices())
+                        {
+                            Console.WriteLine("All ports:");
+                            Console.WriteLine(await Port.Map.GetPorts());
+                        }
                     }
                     break;
                 case "open":
                     {
-                        Console.WriteLine("Open ports:");
-                        Console.WriteLine(await Port.Map.GetOpenPorts());
+                        if(await TryInitDevices())
+                        {
+                            Console.WriteLine("Open ports:");
+                            Console.WriteLine(await Port.Map.GetOpenPorts());
+                        }
                     }
                     break;
                 case "custom":
@@ -77,7 +83,7 @@ namespace Titanic
                 try
                 {
                     await Port.Map.InitializeAsync();
-                    Console.WriteLine("Initalized");
+                    Console.WriteLine("Initialized");
                     return true;
                 }
                 catch (Exception e)
@@ -85,7 +91,7 @@ namespace Titanic
                     Console.WriteLine("Failed attempt: " + (i + 1) + " due to error: ", e, "retrying...");
                 }
             }
-            Console.WriteLine("Initalize failed");
+            Console.WriteLine("Initialize failed");
             return false;
         }
 
