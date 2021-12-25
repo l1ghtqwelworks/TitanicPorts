@@ -103,6 +103,13 @@ namespace ShipwreckLib
         public bool Overlaps(IPort value)
             => PortEnd >= value.PortStart && PortStart <= value.PortEnd;
 
+        public bool Matchs(Port value)
+            =>
+            value.Mapping.Description == this.Mapping.Description &&
+            value.Mapping.PublicPort == this.Mapping.PublicPort &&
+            value.Mapping.PrivatePort == this.Mapping.PrivatePort &&
+            value.Mapping.Protocol == this.Mapping.Protocol;
+
         public override string ToString() => Mapping.ToString();
 
         public static class Map
@@ -153,7 +160,7 @@ namespace ShipwreckLib
                     (protocol == null || value.Protocol == protocol);
             }
 
-            public static Port AddMapping(String description, int startPort, int endPort, Protocol protocol)
+            public static Port AddMapping(string description, int startPort, int endPort, Protocol protocol)
             {
                 return AddMapping(new Mapping(protocol, startPort, endPort, CustomPortDescription.MarkCustom(description, protocol)));
             }
@@ -188,7 +195,7 @@ namespace ShipwreckLib
             }
 
 
-            public static async Task<PortRange> GetForwardedPorts()
+            public static async Task<PortRange> GetOpenPorts()
             {
                 using (var task = Device.GetAllMappingsAsync()) return PortRange.From(await task, out _);
             }
@@ -224,11 +231,13 @@ namespace ShipwreckLib
                 return result;
             }
 
-            public static async Task Forward()
+            public static async Task OpenPorts()
             {
-                var range = await GetForwardedPorts();
+                var openPorts = await GetOpenPorts();
                 var customs = GetCustomPorts();
-                for(int i = 0; i < customs.Length; )
+
+                var range = await CleanUnusedCustomPorts(openPorts, customs);
+                for (int i = 0; i < customs.Length; )
                 {
                     var cur = customs[i];
                     if (range.Overlaps(cur) == -1)
@@ -240,14 +249,45 @@ namespace ShipwreckLib
                 }
             }
 
-            static async Task Forward(PortSpan span, int index)
+            public static async Task<PortRange> CleanUnusedCustomPorts(PortRange openPorts, PortRange customPorts)
+            {
+                var result = openPorts;
+                for(int i = 0; i < result.Count; i++)
+                {
+                    var cur = result[i].Port;
+                    if(cur.Custom && customPorts.Find((value) => value.Matchs(cur)) == null) {
+                        using (var task = Device.DeletePortMapAsync(cur.Mapping)) await task;
+                        result = result.Remove(i);
+                        i--;
+                    }
+                }
+                return result;
+            }
+
+            public static async Task<PortRange> ClosePorts()
+            {
+                var result = await GetOpenPorts();
+                for (int i = 0; i < result.Count; i++)
+                {
+                    var cur = result[i].Port;
+                    if (cur.Custom)
+                    {
+                        using (var task = Device.DeletePortMapAsync(cur.Mapping)) await task;
+                        result = result.Remove(i);
+                        i--;
+                    }
+                }
+                return result;
+            }
+
+            static async Task OpenPortsSpan(PortSpan span, int index)
             {
                 var customs = GetCustomPorts();
                 for(int i = index + 1, length = index + span.Length; i <= length;)
                 {
                     var cur = customs[i];
                     if (!cur.Port.Overlaps(span.Port))
-                        using (var task = Forward(cur, i)) await task;
+                        using (var task = OpenPortsSpan(cur, i)) await task;
                     i += cur.Length + 1;
                 }
             }
