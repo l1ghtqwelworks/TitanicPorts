@@ -127,6 +127,32 @@ namespace ShipwreckLib
                     Device = await discoverer.DiscoverDeviceAsync(PortMapper.Upnp, cts);
             }
 
+            public static Port? GetCustomPort(string? description, int? startPort, int? endPort, Protocol? protocol)
+            {
+                var customs = GetCustomPorts();
+                return customs.Find((value) => MatchPort(description, startPort, endPort, protocol, value));
+            }
+
+            public static Port? RemoveMapping(string? description, int? startPort, int? endPort, Protocol? protocol)
+            {
+                var customs = GetCustomPorts();
+                var targetIndex = customs.FindIndex((value) => MatchPort(description, startPort, endPort, protocol, value));
+                if (targetIndex == -1)
+                    return null;
+                var port = customs[targetIndex].Port;
+                SaveCustomPorts(customs.Remove(targetIndex));
+                return port;
+            }
+
+            public static bool MatchPort(string? description, int? startPort, int? endPort, Protocol? protocol, Port value)
+            {
+                return
+                    (description == null || value.Description == description) &&
+                    (startPort == null || value.PortStart == startPort) &&
+                    (endPort == null || value.PortEnd == endPort) &&
+                    (protocol == null || value.Protocol == protocol);
+            }
+
             public static Port AddMapping(String description, int startPort, int endPort, Protocol protocol)
             {
                 return AddMapping(new Mapping(protocol, startPort, endPort, CustomPortDescription.MarkCustom(description, protocol)));
@@ -196,16 +222,6 @@ namespace ShipwreckLib
                     if (!port.Custom) result.Push(port);
                 }
                 return result;
-            }
-            public static Port GetPort(Func<Port, bool> matchs)
-            {
-                var customs = GetCustomPorts();
-                for(int i = 0; i < customs.Count; i++)
-                {
-                    var port = customs[i].Port;
-                    if (matchs.Invoke(port)) return port;
-                }
-                return null;
             }
 
             public static async Task Forward()

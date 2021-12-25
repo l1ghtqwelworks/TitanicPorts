@@ -136,14 +136,6 @@ namespace ShipwreckLib
             return -1;
         }
 
-        public int IndexOf(string description)
-        {
-            for (var i = 0; i < Count; i++)
-                if (Values[i].Port.Mapping.Description == description)
-                    return i;
-            return -1;
-        }
-
         public override string ToString()
         {
             var result = new StringBuilder(Length.ToString() + Environment.NewLine);
@@ -153,6 +145,36 @@ namespace ShipwreckLib
                 result.AppendLine(current == null ? "null" : current.ToString());
             }
             return result.ToString();
+        }
+
+        public PortRange Remove(int index)
+        {
+            if (index < 0 || index >= Count) 
+                throw new IndexOutOfRangeException("No such index found in port");
+            var result = new PortRange(Count - 1);
+            for (int i = 0; i < index; i++)
+                result.Add(new PortSpan(this[i].Port));
+            for (int i = index + 1; i < Count; i++)
+                result.Add(new PortSpan(this[i].Port));
+            return result;
+        }
+
+        public Port? Find(Func<Port, bool> matchs)
+        {
+            var index = FindIndex(matchs);
+            if (index == -1)
+                return null;
+            return this[index].Port;
+        }
+
+        public int FindIndex(Func<Port, bool> matchs)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                var port = this[i].Port;
+                if (matchs.Invoke(port)) return i;
+            }
+            return -1;
         }
     }
 }

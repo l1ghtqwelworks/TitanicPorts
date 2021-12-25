@@ -11,4 +11,10 @@
     <ProjectReference Include="..\TitanicLib\TitanicLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="L1ghtUtils">
+      <HintPath>..\..\L1ghtUtils\L1ghtUtils\bin\Debug\net6.0\L1ghtUtils.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
