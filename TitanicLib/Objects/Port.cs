@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -117,7 +118,10 @@ namespace ShipwreckLib
             public const int DefaultTimeout = 10000;
             public static string HostIp = "8.8.8.8";
             public static int HostPort = 65530;
-            public static String CustomPortsPath = @"C:\Users\Light\source\repos\Titanic\TitanicPorts.pdat";
+            public static String GetCustomPortsPath()
+            { 
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "TitanicPorts.pdat");
+            }
             public static bool IsInitialized { get; private set; } = false;
             public static IPAddress IpV4 { get; private set; }
             public static NatDevice Device { get; private set; }
@@ -180,18 +184,18 @@ namespace ShipwreckLib
 
             public static PortRange GetCustomPorts()
             {
-                if(!File.Exists(CustomPortsPath))
+                if(!File.Exists(GetCustomPortsPath()))
                 {
                     var result = new PortRange(0);
                     SaveCustomPorts(result);
                     return result;
                 }
-                return PortRange.Parse(File.ReadAllText(CustomPortsPath));
+                return PortRange.Parse(File.ReadAllText(GetCustomPortsPath()));
             }
 
             public static void SaveCustomPorts(PortRange ports)
             {
-                File.WriteAllText(CustomPortsPath, ports.ToString());
+                File.WriteAllText(GetCustomPortsPath(), ports.ToString());
             }
 
 

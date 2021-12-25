@@ -87,24 +87,6 @@ namespace Titanic
             }
             Console.WriteLine("Initalize failed");
             return false;
-            //int timeout = 12;
-            //startpoint:
-            //try
-            //{
-            //    await port.map.initializeasync();
-            //}
-            //catch (exception e)
-            //{
-            //    console.writeline(e);
-            //    timeout--;
-            //    if (timeout > 0) goto startpoint;
-            //    else
-            //    {
-            //        console.writeline("failed");
-            //        return;
-            //    }
-            //}
-            //console.writeline("started");
         }
 
         [Command("open")]
