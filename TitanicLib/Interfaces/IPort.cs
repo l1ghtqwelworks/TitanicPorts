@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Open.Nat;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -9,5 +10,6 @@ namespace ShipwreckLib
     {
         int PortStart { get; }
         int PortEnd { get; }
+        Protocol Protocol { get; }
     }
 }

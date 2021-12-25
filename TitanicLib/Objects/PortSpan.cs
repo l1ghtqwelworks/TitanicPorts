@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Open.Nat;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,12 +12,14 @@ namespace ShipwreckLib
 
         public int PortEnd { get; private set; }
         public int PortStart { get; private set; }
+        public Protocol Protocol { get; private set; }
 
         public PortSpan(Port Port)
         {
             this.Port = Port;
             PortEnd = Port.PortEnd;
             PortStart = Port.PortStart;
+            Protocol = Port.Protocol;
         }
 
         internal void Stretch(PortSpan span)
@@ -26,10 +29,10 @@ namespace ShipwreckLib
         }
 
         public bool Contains(IPort value)
-            => PortStart <= value.PortStart && PortEnd >= value.PortEnd;
+            => PortStart <= value.PortStart && PortEnd >= value.PortEnd && value.Protocol == Protocol;
 
         public bool Overlaps(IPort value)
-            => PortEnd >= value.PortStart && PortStart <= value.PortEnd;
+            => PortEnd >= value.PortStart && PortStart <= value.PortEnd && value.Protocol == Protocol;
 
         public override string ToString() => Length + " " + PortEnd + "-" + PortStart + " " + Port.ToString();
 
