@@ -1,5 +1,7 @@
 /.vs
 /Titanic/bin
 /Titanic/obj
+/Titanic/Properties
 /TitanicLib/bin
 /TitanicLib/obj
+/TitanicPorts.pdat

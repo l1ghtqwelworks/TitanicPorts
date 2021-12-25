@@ -12,33 +12,9 @@ namespace Titanic
             ExecuteArgs(String.Join(" ", args)).Wait();
         }
 
-        static async Task Startup()
-        {
-            int timeout = 12;
-            startpoint:
-            try
-            {
-                await Port.Map.InitializeAsync();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                timeout--;
-                if (timeout > 0) goto startpoint;
-                else
-                {
-                    Console.WriteLine("Failed");
-                    return;
-                }
-            }
-            Console.WriteLine("Started");
-        }
-
         static async Task ExecuteArgs(string args)
         {
-            Console.WriteLine("Sailing Titanic...");
-
-            await Startup();
+            Console.WriteLine("Executing...");
 
             var commandManager = new TitanicConsoleCommandManager();
             var result = commandManager[command: args];
