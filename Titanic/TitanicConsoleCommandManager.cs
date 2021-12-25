@@ -1,4 +1,5 @@
-﻿using ShipwreckLib;
+﻿using Open.Nat;
+using ShipwreckLib;
 
 namespace Titanic
 {
@@ -113,6 +114,12 @@ namespace Titanic
                 Console.WriteLine("Closing ports...");
                 await Port.Map.ClosePorts();
             }
+        }
+
+        [Command("ip")]
+        public void GetIP()
+        {
+            Console.WriteLine(Port.Map.GetLocalAddress().ToString());
         }
     }
 }

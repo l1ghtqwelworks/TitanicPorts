@@ -235,6 +235,16 @@ namespace ShipwreckLib
                 return result;
             }
 
+            public static Task OpenPort(Port value) 
+            {
+                return Device.CreatePortMapAsync(EnforceMappingIp(value.Mapping, IpV4));
+            }
+
+            public static Mapping EnforceMappingIp(Mapping mapping, IPAddress ip)
+            {
+                return new Mapping(mapping.Protocol, ip, mapping.PrivatePort, mapping.PublicPort, mapping.Lifetime, mapping.Description);
+            } 
+
             public static async Task OpenPorts()
             {
                 var openPorts = await GetOpenPorts();
@@ -247,7 +257,7 @@ namespace ShipwreckLib
                     if (range.Overlaps(cur) == -1)
                     {
                         Console.WriteLine("Opening port: " + cur);
-                        using (var task = Device.CreatePortMapAsync(cur.Port.Mapping)) await task;
+                        using (var task = OpenPort(cur.Port)) await task;
                     }
                     i += cur.Length + 1;
                 }
@@ -259,7 +269,7 @@ namespace ShipwreckLib
                 for(int i = 0; i < result.Count; i++)
                 {
                     var cur = result[i].Port;
-                    if(cur.Custom && customPorts.Find((value) => value.Matchs(cur)) == null) {
+                    if(cur.Custom && (customPorts.Find((value) => value.Matchs(cur)) == null || cur.Mapping.PrivateIP.ToString() != IpV4.ToString())) {
                         using (var task = Device.DeletePortMapAsync(cur.Mapping)) await task;
                         result = result.Remove(i);
                         i--;
@@ -306,7 +316,7 @@ namespace ShipwreckLib
                 return false;
             }
 
-            static IPAddress GetLocalAddress()
+            public static IPAddress GetLocalAddress()
             {
                 using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
                 {
