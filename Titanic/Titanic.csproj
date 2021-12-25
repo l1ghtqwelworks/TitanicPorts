@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Publish\" />
+    <Folder Include="Publish\Linux-Arm\" />
   </ItemGroup>
 
 </Project>
