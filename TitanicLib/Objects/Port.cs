@@ -269,10 +269,19 @@ namespace ShipwreckLib
                 for(int i = 0; i < result.Count; i++)
                 {
                     var cur = result[i].Port;
-                    if(cur.Custom && (customPorts.Find((value) => value.Matchs(cur)) == null || cur.Mapping.PrivateIP.ToString() != IpV4.ToString())) {
-                        using (var task = Device.DeletePortMapAsync(cur.Mapping)) await task;
-                        result = result.Remove(i);
-                        i--;
+                    if(cur.Custom) {
+                        string? ruleBroken = null;
+                        if (customPorts.Find((value) => value.Matchs(cur)) == null)
+                            ruleBroken = "Port not registered as a custom port in TitanicPorts.pdat";
+                        if (cur.Mapping.PrivateIP.ToString() != IpV4.ToString())
+                            ruleBroken = "Port ip no longer matches machine ip (" + IpV4 + ")";
+                        if(ruleBroken != null)
+                        {
+                            Console.WriteLine("Clearing port: " + cur + " since: " + ruleBroken);
+                            using (var task = Device.DeletePortMapAsync(cur.Mapping)) await task;
+                            result = result.Remove(i);
+                            i--;
+                        }
                     }
                 }
                 return result;
