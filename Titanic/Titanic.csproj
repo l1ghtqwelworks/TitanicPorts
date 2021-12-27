@@ -19,8 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Publish\Linux-Arm\" />
-    <Folder Include="Publish\Linux-x64\" />
     <Folder Include="Publish\Linux-Arm-x64\" />
     <Folder Include="Publish\Windows\" />
   </ItemGroup>
