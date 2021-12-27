@@ -18,8 +18,14 @@ namespace Titanic
 
             var commandManager = new TitanicConsoleCommandManager();
             var result = commandManager[command: args];
-            if (result != null && result is Task)
-                await (result as Task);
+            if (result != null)
+            {
+                if (result is Task resultTask)
+                    await resultTask;
+                else if (result is string)
+                    Console.WriteLine(result);
+            }
+
         }
     }
 }

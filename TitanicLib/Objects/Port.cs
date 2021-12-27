@@ -330,7 +330,7 @@ namespace ShipwreckLib
                 using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
                 {
                     socket.Connect(HostIp, HostPort);
-                    return ((IPEndPoint)socket.LocalEndPoint).Address;
+                    return ((IPEndPoint)socket.LocalEndPoint!).Address;
                 }
             }
         }

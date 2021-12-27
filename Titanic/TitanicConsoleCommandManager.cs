@@ -1,10 +1,28 @@
 ﻿using Open.Nat;
 using ShipwreckLib;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Text;
 
 namespace Titanic
 {
     public class TitanicConsoleCommandManager : L1ghtUtils.General.CommandManager
     {
+        public static string FlattenException(Exception exception)
+        {
+            var stringBuilder = new StringBuilder();
+
+            while (exception != null)
+            {
+                stringBuilder.AppendLine(exception.Message);
+                stringBuilder.AppendLine(exception.StackTrace);
+
+                exception = exception.InnerException!;
+            }
+
+            return stringBuilder.ToString();
+        }
+
         [Command("get")]
         public async Task WritePorts(string? description, int startPort = -1, int endPort= -1, string protocolStr = "null")
         {
@@ -72,14 +90,11 @@ namespace Titanic
                 Console.WriteLine("Removed port: " + port);
         }
 
-        async Task<Boolean> TryInitDevices()
+        async Task<Boolean> TryInitDevices(int retrys = 12)
         {
-            if (Port.Map.IsInitialized)
-                return true;
-
             Console.WriteLine("Initializing devices...");
 
-            for(int i = 0; i < 12; i++)
+            for(int i = 0; i < retrys; i++)
             {
                 try
                 {
@@ -89,7 +104,7 @@ namespace Titanic
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Failed attempt: " + (i + 1) + " due to error: ", e, "retrying...");
+                    Console.WriteLine("Failed attempt: " + (i + 1) + " due to error: " + FlattenException(e) + (i + 1 < retrys ? Environment.NewLine + "retrying..." : ""));
                 }
             }
             Console.WriteLine("Initialize failed");
@@ -120,6 +135,58 @@ namespace Titanic
         public void GetIP()
         {
             Console.WriteLine(Port.Map.GetLocalAddress().ToString());
+        }
+
+        private DelayedActionScheduler delayedActionScheduler = new DelayedActionScheduler();
+
+        /// <summary>
+        /// runs open command every time IPAdress changes
+        /// </summary>
+        [Command("openloop")]
+        public void FollowChanges()
+        {
+            NetworkChange.NetworkAddressChanged += OpenLoop_NetworkAddressChanged;
+            Console.WriteLine("Input exit in order to stop");
+            var command = Console.ReadLine();
+            while (command != "exit")
+                command = Console.ReadLine();
+            NetworkChange.NetworkAddressChanged -= OpenLoop_NetworkAddressChanged;
+
+        }
+
+        private IPAddress? lastIPAddress = null;
+
+        private void OpenLoop_NetworkAddressChanged(object? sender, EventArgs e)
+        {
+            delayedActionScheduler.ScheduleAction(() =>
+            {
+                OpenLoop_NetworkAddressChangedAsync(sender, e).Wait();
+            });
+        }
+
+        private async Task OpenLoop_NetworkAddressChangedAsync(object? sender, EventArgs e)
+        {
+
+            try
+            {
+                var ip = Port.Map.GetLocalAddress();
+                if (lastIPAddress == null || ip.ToString() != lastIPAddress.ToString())
+                {
+                    Console.WriteLine("Netwrok address changed to: " + ip + " from: " + (lastIPAddress == null ? "null" : lastIPAddress));
+                    if (await this.TryInitDevices(1))
+                    {
+                        await Port.Map.OpenPorts();
+                        lastIPAddress = ip;
+                    }
+                    else
+                        throw new Exception("Failed to init devices (likely due to no internet connection)");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception caught on network address change: " + FlattenException(ex));
+                lastIPAddress = null;
+            }
         }
     }
 }
