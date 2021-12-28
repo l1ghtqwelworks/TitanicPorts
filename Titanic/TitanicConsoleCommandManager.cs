@@ -138,20 +138,38 @@ namespace Titanic
         }
 
         private DelayedActionScheduler delayedActionScheduler = new DelayedActionScheduler();
+        private System.Timers.Timer resetTimeoutTimer;
 
         /// <summary>
-        /// runs open command every time IPAdress changes
+        /// runs open command every time IPAdress changes or ports timeout
         /// </summary>
         [Command("openloop")]
         public void FollowChanges()
         {
             NetworkChange.NetworkAddressChanged += OpenLoop_NetworkAddressChanged;
             Console.WriteLine("Input exit in order to stop");
+            resetTimeoutTimer = new System.Timers.Timer();
+            resetTimeoutTimer.Interval = (Port.Map.DefaultPortTimeout * 1000) / 2;
+            resetTimeoutTimer.Elapsed += ResetPortsTimeout;
+            resetTimeoutTimer.AutoReset = true;
+            resetTimeoutTimer.Start();
             var command = Console.ReadLine();
             while (command != "exit")
                 command = Console.ReadLine();
+            resetTimeoutTimer.Stop();
+            resetTimeoutTimer.Dispose();
             NetworkChange.NetworkAddressChanged -= OpenLoop_NetworkAddressChanged;
 
+        }
+
+        private async void ResetPortsTimeout(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            Console.WriteLine("Reseting ports timeout");
+            if(await TryInitDevices())
+            {
+                await Port.Map.ResetPortsTimeout();
+            }
+            Console.WriteLine("Reset");
         }
 
         private IPAddress? lastIPAddress = null;
@@ -187,6 +205,38 @@ namespace Titanic
                 Console.WriteLine("Exception caught on network address change: " + FlattenException(ex));
                 lastIPAddress = null;
             }
+        }
+
+        [Command("timeout")]
+        public async Task GetTimeout(bool reset = false)
+        {
+            int customCount = 0;
+            var result = new StringBuilder();
+            if(await this.TryInitDevices())
+            {
+                if(reset)
+                {
+                    await Port.Map.ResetPortsTimeout();
+                }
+                var openPorts = await Port.Map.GetOpenPorts();
+                for (int i = 0; i < openPorts.Length; i++)
+                {
+                    var cur = openPorts[i].Port;
+                    if (cur.Custom)
+                    {
+                        customCount++;
+                        result.AppendLine(cur.ToString() + " " + cur.Mapping.Lifetime + " " + cur.Mapping.Expiration);
+                    }
+                }
+            }
+            Console.WriteLine(customCount + Environment.NewLine + result.ToString());
+        }
+
+        [Command("test")]
+        public void TestString(int lifetime)
+        {
+            Console.WriteLine(new Mapping(Protocol.Tcp, 25565, 25565, lifetime, "Test").Expiration);
+            Console.WriteLine(new Mapping(Protocol.Tcp, 25565, 25565).Expiration);
         }
     }
 }

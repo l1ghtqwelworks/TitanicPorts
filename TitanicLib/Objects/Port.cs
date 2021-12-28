@@ -32,7 +32,7 @@ namespace ShipwreckLib
             next = value.IndexOf(' ', index = next + 1);
             var privateport = int.Parse(value.Substring(index, next - index));
             var description = value.Substring(next += 2, value.Length - next - 1);
-            return new Mapping(protocol, ip, privateport, publicport, 0, description);
+            return new Mapping(protocol, ip, privateport, publicport, Map.DefaultPortTimeout, description);
         }
         public static Port Parse(string value) => new Port(MappingParse(value));
 
@@ -76,7 +76,7 @@ namespace ShipwreckLib
         //    }
         //}
 
-        public readonly Mapping Mapping;
+        public Mapping Mapping { get; private set; }
 
         public Protocol Protocol => Mapping.Protocol;
         public int Lifetime => Mapping.Lifetime;
@@ -118,6 +118,7 @@ namespace ShipwreckLib
             public const int DefaultTimeout = 10000;
             public static string HostIp = "8.8.8.8";
             public static int HostPort = 65530;
+            public const int DefaultPortTimeout = 60;
             public static String GetCustomPortsPath()
             { 
                 return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "TitanicPorts.pdat");
@@ -166,7 +167,7 @@ namespace ShipwreckLib
 
             public static Port AddMapping(string description, int startPort, int endPort, Protocol protocol)
             {
-                return AddMapping(new Mapping(protocol, startPort, endPort, CustomPortDescription.MarkCustom(description, protocol)));
+                return AddMapping(new Mapping(protocol, startPort, endPort, DefaultPortTimeout, CustomPortDescription.MarkCustom(description, protocol)));
             }
             internal static Port AddMapping(Mapping mapping)
             {
@@ -198,6 +199,31 @@ namespace ShipwreckLib
                 File.WriteAllText(GetCustomPortsPath(), ports.ToString());
             }
 
+            public static async Task ResetPortsTimeout()
+            {
+                using(var openPortTask = GetOpenPorts())
+                {
+                    using(var cleanPortTask = CleanUnusedCustomPorts(await openPortTask, GetCustomPorts()))
+                    {
+                        var range = await cleanPortTask;
+                        for (int i = 0; i < range.Length; i++)
+                        {
+                            var cur = range[i].Port;
+                            if (cur.Custom)
+                            {
+                                using (var task = ResetPortTimeout(cur)) await task;
+                            }
+                        }
+                    }
+                }
+            }
+
+            public static async Task ResetPortTimeout(Port port)
+            {
+                using (var task = Device.DeletePortMapAsync(port.Mapping)) await task;
+                port.Mapping = new Mapping(port.Protocol, port.Mapping.PrivatePort, port.Mapping.PublicPort, DefaultPortTimeout, port.Mapping.Description);
+                using (var task = Device.CreatePortMapAsync(port.Mapping)) await task;
+            }
 
             public static async Task<PortRange> GetOpenPorts()
             {
