@@ -118,7 +118,7 @@ namespace ShipwreckLib
             public const int DefaultTimeout = 10000;
             public static string HostIp = "8.8.8.8";
             public static int HostPort = 65530;
-            public const int DefaultPortTimeout = 60;
+            public const int DefaultPortTimeout = 86400;
             public static String GetCustomPortsPath()
             { 
                 return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "TitanicPorts.pdat");

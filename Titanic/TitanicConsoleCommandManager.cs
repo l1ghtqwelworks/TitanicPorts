@@ -141,7 +141,8 @@ namespace Titanic
         private System.Timers.Timer resetTimeoutTimer;
 
         /// <summary>
-        /// runs open command every time IPAdress changes or ports timeout
+        /// runs open command every time IPAdress changes
+        /// and prevents timeout
         /// </summary>
         [Command("openloop")]
         public void FollowChanges()
@@ -230,13 +231,6 @@ namespace Titanic
                 }
             }
             Console.WriteLine(customCount + Environment.NewLine + result.ToString());
-        }
-
-        [Command("test")]
-        public void TestString(int lifetime)
-        {
-            Console.WriteLine(new Mapping(Protocol.Tcp, 25565, 25565, lifetime, "Test").Expiration);
-            Console.WriteLine(new Mapping(Protocol.Tcp, 25565, 25565).Expiration);
         }
     }
 }
