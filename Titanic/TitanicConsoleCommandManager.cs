@@ -145,12 +145,15 @@ namespace Titanic
         /// and prevents timeout
         /// </summary>
         [Command("openloop")]
-        public void FollowChanges()
+        public void FollowChanges(int intervalMilliseconds = 0)
         {
             NetworkChange.NetworkAddressChanged += OpenLoop_NetworkAddressChanged;
             Console.WriteLine("Input exit in order to stop");
             resetTimeoutTimer = new System.Timers.Timer();
-            resetTimeoutTimer.Interval = (Port.Map.DefaultPortTimeout * 1000) / 2;
+            if(intervalMilliseconds == 0)
+                resetTimeoutTimer.Interval = (Port.Map.DefaultPortTimeout * 1000) / 2;
+            else
+                resetTimeoutTimer.Interval = intervalMilliseconds;
             resetTimeoutTimer.Elapsed += ResetPortsTimeout;
             resetTimeoutTimer.AutoReset = true;
             resetTimeoutTimer.Start();
